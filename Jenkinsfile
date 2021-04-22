@@ -73,7 +73,7 @@ def prepareBuildStages() {
   // for (i=1; i<=policies.length(); i++) {
   def buildParallelMap = [:]
   for (name in policies ) {
-    def n = "${name} ${i}"
+    def n = "${name}"
     buildParallelMap.put(n, prepareOneBuildStage(n))
   }
   buildStagesList.add(buildParallelMap)
