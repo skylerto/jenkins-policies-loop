@@ -66,25 +66,49 @@ node('master') {
 }
 
 // Create List of build stages to suit
-@NonCPS
 def prepareBuildStages() {
   def buildStagesList = []
 
-  def policies = findFiles(glob: 'policies/*.rb')
-
-  def parallelStagesMap = policies.collectEntries {
-      ["${it.split('/')[1].split('.')[0]}" : generateStage(it)]
-  }
-
-  return parallelStagesMap
-}
-
-@NonCPS
-def generateStage(job) {
-    return {
-        stage("stage: ${job}") {
-          echo "This is ${job}."
-          sh script: "sleep 15"
-        }
+  for (i=1; i<5; i++) {
+    def buildParallelMap = [:]
+    for (name in [ 'one', 'two', 'three' ] ) {
+      def n = "${name} ${i}"
+      buildParallelMap.put(n, prepareOneBuildStage(n))
     }
+    buildStagesList.add(buildParallelMap)
+  }
+  return buildStagesList
 }
+
+def prepareOneBuildStage(String name) {
+  return {
+    stage("Build stage:${name}") {
+      println("Building ${name}")
+      sh(script:'sleep 5', returnStatus:true)
+    }
+  }
+}
+
+// Create List of build stages to suit
+// @NonCPS
+// def prepareBuildStages() {
+//   def buildStagesList = []
+
+//   def policies = findFiles(glob: 'policies/*.rb')
+
+//   def parallelStagesMap = policies.collectEntries {
+//       ["${it.split('/')[1].split('.')[0]}" : generateStage(it)]
+//   }
+
+//   return parallelStagesMap
+// }
+
+// @NonCPS
+// def generateStage(job) {
+//     return {
+//         stage("stage: ${job}") {
+//           echo "This is ${job}."
+//           sh script: "sleep 15"
+//         }
+//     }
+// }
