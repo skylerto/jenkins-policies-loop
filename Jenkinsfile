@@ -73,7 +73,7 @@ def prepareBuildStages() {
   def policies = findFiles(glob: 'policies/*.rb')
 
   def parallelStagesMap = policies.collectEntries {
-      ["${it}" : generateStage(it)]
+      ["${it.split('/')[1].split('.')[0]}" : generateStage(it)]
   }
 
   return parallelStagesMap
