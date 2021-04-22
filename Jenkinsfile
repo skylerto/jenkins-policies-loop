@@ -68,15 +68,16 @@ node('master') {
 // Create List of build stages to suit
 def prepareBuildStages() {
   def buildStagesList = []
+  def policies = findFiles(glob: 'policies/*.rb')
 
-  for (i=1; i<5; i++) {
-    def buildParallelMap = [:]
-    for (name in [ 'one', 'two', 'three' ] ) {
-      def n = "${name} ${i}"
-      buildParallelMap.put(n, prepareOneBuildStage(n))
-    }
-    buildStagesList.add(buildParallelMap)
+  // for (i=1; i<=policies.length(); i++) {
+  def buildParallelMap = [:]
+  for (name in policies ) {
+    def n = "${name} ${i}"
+    buildParallelMap.put(n, prepareOneBuildStage(n))
   }
+  buildStagesList.add(buildParallelMap)
+  // }
   return buildStagesList
 }
 
