@@ -43,6 +43,7 @@ def buildStages
 
 node('master') {
   stage('Initialise') {
+    checkout scm
     // Set up List<Map<String,Closure>> describing the builds
     buildStages = prepareBuildStages()
     println("Initialised pipeline.")
@@ -80,7 +81,6 @@ def prepareBuildStages() {
 def generateStage(job) {
     return {
         stage("stage: ${job}") {
-          checkout scm
           echo "This is ${job}."
           sh script: "sleep 15"
         }
