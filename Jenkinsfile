@@ -76,18 +76,19 @@ def prepareBuildStages() {
     def buildParallelMap = [:]
     for (name in ['install', 'push']) {
       def n = "${policy} ${name}"
-      buildParallelMap.put(n, prepareOneBuildStage(n))
+      buildParallelMap.put(n, prepareOneBuildStage(policy, name))
     }
     buildStagesList.add(buildParallelMap)
   }
   return buildStagesList
 }
 
-def prepareOneBuildStage(String name) {
+def prepareOneBuildStage(String policy, String name) {
   return {
-    stage("Build stage:${name}") {
+    stage("${name} ${policy}") {
+      def dir, file = it.split('/')
       println("Building ${name}")
-      sh(script:'sleep 5', returnStatus:true)
+      sh(script:"cd ${dir} && chef ${name} ${file}", returnStatus:true)
     }
   }
 }
