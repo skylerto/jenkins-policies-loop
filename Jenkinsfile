@@ -71,13 +71,15 @@ def prepareBuildStages() {
   def policies = findFiles(glob: 'policies/*.rb')
 
   // for (i=1; i<=policies.length(); i++) {
-  def buildParallelMap = [:]
-  for (name in policies ) {
-    def n = "${name}"
-    buildParallelMap.put(n, prepareOneBuildStage(n))
+
+  for (policy in policies ) {
+    def buildParallelMap = [:]
+    for (name in ['install', 'push']) {
+      def n = "${policy} ${name}"
+      buildParallelMap.put(n, prepareOneBuildStage(n))
+    }
+    buildStagesList.add(buildParallelMap)
   }
-  buildStagesList.add(buildParallelMap)
-  // }
   return buildStagesList
 }
 
