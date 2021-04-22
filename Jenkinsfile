@@ -86,7 +86,8 @@ def prepareBuildStages() {
 def prepareOneBuildStage(policy, name) {
   return {
     stage("${name} ${policy}") {
-      def dir, file = policy.toString().split('/')
+      def dir = policy.toString().split('/')[0]
+      def file = policy.toString().split('/')[1]
       println("Building ${name}")
       sh(script:"cd ${dir} && chef ${name} ${file}", returnStatus:true)
     }
