@@ -66,6 +66,7 @@ node('master') {
 }
 
 // Create List of build stages to suit
+@NonCPS
 def prepareBuildStages() {
   def buildStagesList = []
 
@@ -78,6 +79,7 @@ def prepareBuildStages() {
   return parallelStagesMap
 }
 
+@NonCPS
 def generateStage(job) {
     return {
         stage("stage: ${job}") {
