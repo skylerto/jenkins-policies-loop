@@ -83,7 +83,7 @@ def prepareBuildStages() {
   return buildStagesList
 }
 
-def prepareOneBuildStage(String policy, String name) {
+def prepareOneBuildStage(policy, name) {
   return {
     stage("${name} ${policy}") {
       def dir, file = it.split('/')
