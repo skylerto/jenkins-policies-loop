@@ -1,21 +1,24 @@
 
-def policies = findFiles(glob: 'policies/*.rb')
-
-def parallelStagesMap = policies.collectEntries {
-    ["${it}" : generateStage(it)]
-}
-
-def generateStage(job) {
-    return {
-        stage("stage: ${job}") {
-                echo "This is ${job}."
-                sh script: "sleep 15"
-        }
-    }
-}
+// node {
+// }
 
 pipeline {
     agent any
+
+  def policies = findFiles(glob: 'policies/*.rb')
+
+  def parallelStagesMap = policies.collectEntries {
+      ["${it}" : generateStage(it)]
+  }
+
+  def generateStage(job) {
+      return {
+          stage("stage: ${job}") {
+                  echo "This is ${job}."
+                  sh script: "sleep 15"
+          }
+      }
+  }
 
     stages {
         stage('non-parallel stage') {
